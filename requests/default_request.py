@@ -1,7 +1,7 @@
 from flask_sieve import FormRequest
 
 
-class Validation(FormRequest):
+class DefaultRequest(FormRequest):
 
     def rules(self):
         return {
@@ -12,5 +12,6 @@ class Validation(FormRequest):
         return {
            
         }
+
 
 

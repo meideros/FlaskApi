@@ -12,6 +12,8 @@ app.config['MAIL_USERNAME'] = 'your_username'
 app.config['MAIL_PASSWORD'] = 'your_password'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
+app.config['JSON_SORT_KEYS'] = False
+
 ORATOR_DATABASES = {
     'mysql': {
         'driver': 'mysql',
@@ -29,8 +31,6 @@ CORS(app)
 Sieve(app)
 mail = Mail(app)
 db = Orator(app)
-
-
 
 
 @app.route('/')
