@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_orator import Orator
 from flask_sieve import Sieve
 from flask_mail import Mail, Message
-
+from api.auth import auth
 
 app = Flask(__name__)
 app.config['MAIL_SERVER'] = 'your_mail_serveur'
@@ -24,6 +24,7 @@ ORATOR_DATABASES = {
         'prefix': ''
     }
 }
+
 app.config.from_object(__name__)
 
 
@@ -31,6 +32,8 @@ CORS(app)
 Sieve(app)
 mail = Mail(app)
 db = Orator(app)
+
+app.register_blueprint(auth, url_prefix="/api/auth")
 
 
 @app.route('/')
@@ -62,4 +65,4 @@ def internal_server_error(e):
 
 
 if __name__ == "__main__":
-    app.run(debug=False, port=3000)
+    app.run(debug=True)

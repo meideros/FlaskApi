@@ -35,4 +35,5 @@ def required_authentification(function):
                 "message": "Non authorisé. Merci de renseigner un token d'authorisation valide"
             }), 401
         return function
+    inner.__name__ = function.__name__
     return inner

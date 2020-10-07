@@ -12,7 +12,8 @@ def login():
     if "email" in request.form.keys() and "password" in request.form.keys():
         user = User.where("email", request.form["email"]).first()
         if user:
-            correct_password = check_password_hash(user.password, request.form["password"])
+            correct_password = check_password_hash(
+                user.password, request.form["password"])
             if correct_password:
                 user.token = secrets.token_hex(100)
                 user.save()
@@ -34,7 +35,8 @@ def login():
 @auth.route("/logout")
 @required_authentification
 def logout():
-    User.where('token', get_request_header_authorization_token()).update(token=None)
+    User.where('token', get_request_header_authorization_token()
+               ).update(token=None)
     return jsonify({
         "message": "Vous êtes déconnecté",
     }), 200
