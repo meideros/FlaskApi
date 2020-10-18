@@ -4,6 +4,8 @@ Flask-Mail==0.9.1
 flask-orator==0.2.0
 flask-sieve==1.1.1
 PyMySQL==0.9.3
+Flask-HTTPAuth==4.1.0
+Flask-Bcrypt==0.7.1
 cleo==0.6.8
 
 

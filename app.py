@@ -3,36 +3,23 @@ from flask_cors import CORS
 from flask_orator import Orator
 from flask_sieve import Sieve
 from flask_mail import Mail, Message
-from api.auth import auth
+from models.user import User
+from werkzeug.security import generate_password_hash
+from config import BaseConfig
+from flask_httpauth import HTTPTokenAuth
+from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
-app.config['MAIL_SERVER'] = 'your_mail_serveur'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'your_username'
-app.config['MAIL_PASSWORD'] = 'your_password'
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
-app.config['JSON_SORT_KEYS'] = False
+httpauth = HTTPTokenAuth(scheme='Bearer')
 
-ORATOR_DATABASES = {
-    'mysql': {
-        'driver': 'mysql',
-        'host': 'server_address',
-        'database': 'database_name',
-        'user': 'your_username',
-        'password': 'your_password',
-        'prefix': ''
-    }
-}
-
-app.config.from_object(__name__)
-
+app.config.from_object(BaseConfig)
 
 CORS(app)
 Sieve(app)
 mail = Mail(app)
 db = Orator(app)
-
+bcrypt = Bcrypt(app)
+from api.auth import auth
 app.register_blueprint(auth, url_prefix="/api/auth")
 
 
@@ -64,5 +51,15 @@ def internal_server_error(e):
     }), 500
 
 
+@httpauth.verify_token
+def verify_token(token):
+   return User.where('token', token).first()
+
+
+@httpauth.error_handler
+def auth_error(status):
+    return jsonify({
+        "message": "Non authorisé. Merci de renseigner un token d'authorisation valide"
+    }), status
 if __name__ == "__main__":
     app.run(debug=True)
