@@ -36,7 +36,7 @@ class DevConfig(object):
             'host': 'localhost',
             'database': 'test',
             'user': 'root',
-            'password': 'Kqs3iEB?SPMx@Lucas',
+            'password': 'root',
             'prefix': ''
         }
     }

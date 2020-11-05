@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from models.user import User
+from repositories.user_repository import user_repository
 from werkzeug.security import check_password_hash
-from utils import get_request_header_authorization_token, required_authentification
 import secrets
 from flask_sieve import validate
 from requests.register_request import RegisterRequest
@@ -12,7 +12,7 @@ auth = Blueprint('auth', __name__)
 @auth.route('/register', methods=['POST'])
 @validate(RegisterRequest)
 def register():
-    user = User.create(request.form)
+    user = user_repository.create(request.form)
     return jsonify({
         "message": "Inscription bien effectuée",
         "data": user.serialize()
@@ -22,7 +22,7 @@ def register():
 @auth.route("/login", methods=["POST"])
 def login():
     if "email" in request.form.keys() and "password" in request.form.keys():
-        user = User.where("email", request.form["email"]).first()
+        user = user_repository.find_user_by_email(request.form["email"]) 
         if user:
             correct_password = bcrypt.check_password_hash(
                 user.password, request.form["password"])
@@ -61,4 +61,4 @@ def user():
     return jsonify({
         "result": httpauth.current_user().serialize()
     }), 200
- 
+

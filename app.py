@@ -5,21 +5,21 @@ from flask_sieve import Sieve
 from flask_mail import Mail, Message
 from models.user import User
 from werkzeug.security import generate_password_hash
-from config import BaseConfig
+from config import DevConfig
 from flask_httpauth import HTTPTokenAuth
 from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
 httpauth = HTTPTokenAuth(scheme='Bearer')
 
-app.config.from_object(BaseConfig)
+app.config.from_object(DevConfig)
 
 CORS(app)
 Sieve(app)
 mail = Mail(app)
 db = Orator(app)
 bcrypt = Bcrypt(app)
-from api.auth import auth
+from controllers.user_controller import auth
 app.register_blueprint(auth, url_prefix="/api/auth")
 
 
