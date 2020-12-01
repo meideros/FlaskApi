@@ -34,7 +34,7 @@ class DevConfig(object):
         'mysql': {
             'driver': 'mysql',
             'host': 'localhost',
-            'database': 'test',
+            'database': 'FlaskApi',
             'user': 'root',
             'password': 'root',
             'prefix': ''
